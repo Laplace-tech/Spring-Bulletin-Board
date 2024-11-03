@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+
+<div layout:fragment="content" class="container my-3">
+
+	<div class="row my-3">
+
+		<div class="col-6">
+			<!-- 질문 등록 버튼 -->
+			<a th:href="@{/articles/create}" class="btn btn-primary">Article 등록하기</a>
+		</div>
+
+	</div>
+
+
+	<table class="table">
+
+		<thead class="table-dark">
+			<tr>
+				<th>No.</th>
+				<th>Author</th>
+				<th>Title</th>
+				<th>Date</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<!-- 아티클 목록을 반복하여 출력 -->
+			<tr th:each="article, iterStat : ${articles}">
+				<td th:text="${iterStat.index + 1}"></td>
+				<td th:text="${article.author}"></td>
+				<td>
+					<a th:href="@{/articles/detail/{id}(id=${article.id})}" th:text="${article.title}"></a>
+					<!-- 댓글 개수 표시 -->
+					<span class="text-danger" th:if="${article.commentList.size() > 0}"
+						th:text="'[' + ${article.commentList.size()} + ']'"></span>
+				</td>
+				<td th:text="${#temporals.format(article.createdDate, 'yyyy-MM-dd HH:mm')}"></td>
+			</tr>
+		</tbody>
+	</table>
+
+</div>
+
+<script></script>
+
+</html>
