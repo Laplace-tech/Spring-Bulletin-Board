@@ -1,0 +1,37 @@
+<html layout:decorate="~{layout}">
+<div layout:fragment="content" class="container">
+
+	<!-- Heading -->
+	<h5 class="my-3 border-bottom pb-2">질문등록</h5>
+
+	<!-- 폼 데이터 -->
+	<!-- 타임리프(Thymeleaf)에서 th:action을 명시하지 않았을 때, 
+		 기본적으로는 해당 <form> 태그는 현재 페이지의 URL로 POST 요청을 보냄 -->
+	<form
+		th:action="@{${articleSubmitForm.id} == null ? '/articles/create' : '/articles/modify/' + ${articleSubmitForm.id}}"
+		th:object="${articleSubmitForm}" method="post">
+		<!-- 입력 데이터 검증 -->
+		<div th:replace="~{form_errors :: formErrorsFragment}"></div>
+
+		<!-- 제목 -->
+		<div class="mb-3">
+			<label for="title" class="form-label">제목</label>
+			<input type="text" th:field="*{title}" class="form-control">
+		</div>
+
+		<!-- 내용 -->
+		<div class="mb-3">
+			<label for="content" class="form-label">내용</label>
+			<textarea th:field="*{content}" class="form-control" rows="10"></textarea>
+		</div>
+
+		<!-- 수정 시 _method 숨겨진 필드 추가 -->
+		<input type="hidden" name="_method" th:value="${articleSubmitForm.id} != null ? 'patch' : ''" />
+
+		<!-- 제출하기 -->
+		<input type="submit" value="저장하기" class="btn btn-primary my-2">
+	</form>
+
+
+</div>
+</html>
