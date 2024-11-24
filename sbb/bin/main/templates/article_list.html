@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+
+<div layout:fragment="content" class="container my-3">
+
+    <div class="row my-3">
+        <div class="col-6">
+            <!-- 질문 등록 버튼 -->
+            <a th:href="@{/articles/create}" class="btn btn-primary">Article 등록하기</a>
+        </div>
+    </div>
+
+    <table class="table">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">No.</th>
+                <th scope="col">Author</th>
+                <th scope="col">Title</th>
+                <th scope="col">Date</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr th:if="${articlePage.isEmpty()}">
+                <td colspan="4" class="text-center">등록된 글이 없습니다.</td>
+            </tr>
+
+            <tr th:each="article, loop : ${articlePage.content}">
+                <td th:text="${articlePage.totalElements - (articlePage.number * articlePage.size) - loop.index}"></td>
+                <td th:text="${article.author}"></td>
+                <td>
+                    <a th:href="@{/articles/detail/{id}(id=${article.id})}" th:text="${article.title}"></a>
+                    <span class="text-danger" th:if="${article.commentList.size() > 0}"
+                          th:text="'[' + ${article.commentList.size()} + ']'"></span>
+                </td>
+                <td th:text="${#temporals.format(article.createdDate, 'yyyy-MM-dd HH:mm')}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div th:if="${!articlePage.isEmpty()}">
+        <ul class="pagination justify-content-center">
+            <!-- 이전 버튼 -->
+            <li class="page-item" th:classappend="${!articlePage.hasPrevious()} ? 'disabled'">
+                <a class="page-link" th:href="@{/articles(page=${articlePage.number - 1})}" aria-label="Previous">
+                    <span aria-hidden="true">이전</span>
+                </a>
+            </li>
+
+            <!-- 페이지 번호 -->
+            <li th:each="page : ${#numbers.sequence(0, articlePage.totalPages - 1)}"
+                th:if="${page >= articlePage.number - 2 and page <= articlePage.number + 2}"
+                th:classappend="${page == articlePage.number} ? 'active'" class="page-item">
+                <a th:href="@{/articles(page=${page})}" th:text="${page + 1}" class="page-link"></a>
+            </li>
+
+            <!-- 다음 버튼 -->
+            <li class="page-item" th:classappend="${!articlePage.hasNext()} ? 'disabled'">
+                <a class="page-link" th:href="@{/articles(page=${articlePage.number + 1})}" aria-label="Next">
+                    <span aria-hidden="true">다음</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+</div>
+
+</html>
