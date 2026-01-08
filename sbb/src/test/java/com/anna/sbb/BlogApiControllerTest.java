@@ -55,8 +55,8 @@ class BlogApiControllerTest {
 //		
 //		// given
 //		final String url = "/articles/create";
-//		final String title = "Fucking Title";
-//		final String content = "Fucking content";
+//		final String title = "Title";
+//		final String content = "content";
 //		
 //		final ArticleDto articleDto = ArticleDto.builder()
 //											.title(title)
@@ -157,5 +157,6 @@ class BlogApiControllerTest {
 //		
 //	}
 }
+
 
 
